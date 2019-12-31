@@ -9,6 +9,8 @@ using UnityEngine;
 /// <version> 11/21/2019 </version>
 public class MovementManager : MonoBehaviour {
     private CharacterController characterController;
+    [Header("Animation Settings")]
+    public Animator animator;
 
     [Header("Speed Settings")]
     [SerializeField] private float forwardMax, backwardMax, rightMax, leftMax;
@@ -16,7 +18,7 @@ public class MovementManager : MonoBehaviour {
 
     [Header("Acceleration Curves")]
     [SerializeField] private AnimationCurve forwardCurve, backwardCurve, rightCurve, leftCurve;
-    private float forwardT, backwardT, rightT, leftT;
+    public float forwardT, backwardT, rightT, leftT;
     [SerializeField] private float forwardTimePeriod, backwardTimePeriod, rightTimePeriod, leftTimePeriod; 
 
     [Header("Key Bindings")]
@@ -31,6 +33,7 @@ public class MovementManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         manageTime();
+        manageAnimations();
         applyVelocity();
     }
 
@@ -80,5 +83,21 @@ public class MovementManager : MonoBehaviour {
         velocity -= gameObject.transform.right * forwardCurve.Evaluate(leftT);
 
         characterController.Move(velocity);
+    }
+
+    private void manageAnimations() {
+        if (forwardT > 0f || backwardT > 0f) {
+            Debug.Log("Running");
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isStrafing", false);
+        } else if (rightT > 0f || leftT > 0f) {
+            Debug.Log("Strafing");
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isStrafing", true);
+        } else {
+            Debug.Log("Idle");
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isStrafing", false);
+        }
     }
 }

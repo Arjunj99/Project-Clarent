@@ -5,8 +5,11 @@ using UnityEngine;
 public class craftingScript : MonoBehaviour
 {
     public GameObject cube;
+    public GameObject camera;
     public GameObject sword;
     GameObject craftingObj;
+    public float rotSpeed = 1000;
+    public float scrollSpeed = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +18,14 @@ public class craftingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        float xRotation = Input.GetAxis("Vertical") * rotSpeed;
+        float yRotation = Input.GetAxis("Horizontal") * rotSpeed;
+        float scrollMove = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed * Time.deltaTime;
+
+        //yRotation *= Time.deltaTime;
+        //xRotation *= Time.deltaTime;
+
         if (Input.GetKeyDown("space"))
         {
             craftingObj = Instantiate(cube);
@@ -25,14 +36,9 @@ public class craftingScript : MonoBehaviour
         {
             CheckTag();
         }
-        if(Input.GetKeyDown("a"))
-        {
-            toggleSnapSpots(false);
-        }
-        if (Input.GetKeyDown("d"))
-        {
-            toggleSnapSpots(true);
-        }
+        camera.transform.Rotate(0, -yRotation, 0, Space.World);
+        camera.transform.Rotate(xRotation, 0, 0);
+        camera.transform.GetChild(0).transform.Translate(0, 0, scrollMove);
     }
 
 
@@ -45,7 +51,7 @@ public class craftingScript : MonoBehaviour
         {
             if (hitInfo.collider.gameObject.tag == "buildable")
             {
-                if(hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("snapSpot"))
+                if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("snapSpot"))
                 {
                     craftingObj.transform.position = hitInfo.transform.position;
                     craftingObj.transform.rotation = hitInfo.transform.rotation;
@@ -58,12 +64,12 @@ public class craftingScript : MonoBehaviour
                 }
 
 
-                if(Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     craftingObj.transform.SetParent(sword.transform);
                     GameObject baseObj = craftingObj.transform.GetChild(0).gameObject;
                     baseObj.layer = LayerMask.NameToLayer("Default");
-                    for(int i = 0; i < baseObj.transform.childCount; i++)
+                    for (int i = 0; i < baseObj.transform.childCount; i++)
                     {
                         baseObj.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("snapSpot");
                     }
@@ -83,7 +89,7 @@ public class craftingScript : MonoBehaviour
     void recursiveLayerChange(LayerMask l, GameObject g)
     {
         g.layer = l;
-        for(int i = 0;  i < g.transform.childCount; i++)
+        for (int i = 0; i < g.transform.childCount; i++)
         {
             recursiveLayerChange(l, g.transform.GetChild(i).gameObject);
         }
@@ -91,9 +97,10 @@ public class craftingScript : MonoBehaviour
 
     void toggleSnapSpots(bool ac)
     {
-        for(int i = 1; i < sword.transform.childCount; i++) {
+        for (int i = 1; i < sword.transform.childCount; i++)
+        {
             Transform piece = sword.transform.GetChild(i).transform.GetChild(0);
-            for(int j = 0; j < piece.childCount; j++)
+            for (int j = 0; j < piece.childCount; j++)
             {
                 piece.GetChild(j).gameObject.SetActive(ac);
             }

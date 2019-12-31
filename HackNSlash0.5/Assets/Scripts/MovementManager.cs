@@ -8,112 +8,77 @@ using UnityEngine;
 /// <author> Arjun Jaishankar </author>
 /// <version> 11/21/2019 </version>
 public class MovementManager : MonoBehaviour {
-    public CharacterController characterController;
-
+    private CharacterController characterController;
 
     [Header("Speed Settings")]
     [SerializeField] private float forwardMax, backwardMax, rightMax, leftMax;
-    public Vector3 velocity = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
 
     [Header("Acceleration Curves")]
     [SerializeField] private AnimationCurve forwardCurve, backwardCurve, rightCurve, leftCurve;
-    public float forwardT, backwardT, rightT, leftT;
+    private float forwardT, backwardT, rightT, leftT;
     [SerializeField] private float forwardTimePeriod, backwardTimePeriod, rightTimePeriod, leftTimePeriod; 
 
     [Header("Key Bindings")]
     public KeyCode forward, backward, right, left;
 
-    
-
-
-
-
-
     // Start is called before the first frame update
     void Start() {
         characterController = GetComponent<CharacterController>();
         forwardT = 0; backwardT = 0; rightT = 0; leftT = 0;
-        // Debug.Log("D");
     }
 
     // Update is called once per frame
     void Update() {
-        manageVelocity();
+        manageTime();
         applyVelocity();
-        // Debug.Log("J");
     }
 
-    private void manageVelocity() {
-        // Debug.Log("P");
-
-        adjustVelocity(forward, forwardT, backwardT, forwardTimePeriod, backwardTimePeriod, 3);
-        adjustVelocity(backward, backwardT, forwardT, backwardTimePeriod, forwardTimePeriod, 3);
-        adjustVelocity(right, rightT, leftT, rightTimePeriod, leftTimePeriod, 3);
-        adjustVelocity(left, leftT, rightT, leftTimePeriod, rightTimePeriod, 3);
-
-        // if (!Input.GetKeyDown(forward) && !Input.GetKeyDown(backward)) {
-        //     if (forwardT > 0) {
-        //         forwardT -= (Time.deltaTime/forwardTimePeriod) * 2;
-        //     } else {
-        //         forwardT = 0;
-        //     }
-
-        //     if (backwardT > 0) {
-        //         backwardT -= (Time.deltaTime/backwardTimePeriod) * 2;
-        //     } else {
-        //         backwardT = 0;
-        //     }
-        // }
+    /// <summary>
+    /// ManageTime sets the time spent in each of the four movement states.
+    /// </summary>
+    private void manageTime() {
+        forwardT += adjustVelocity(forward, forwardT, forwardTimePeriod, 3);
+        backwardT += adjustVelocity(backward, backwardT, backwardTimePeriod, 3);
+        rightT += adjustVelocity(right, rightT, rightTimePeriod, 3);
+        leftT += adjustVelocity(left, leftT, leftTimePeriod, 3);
     }
 
-    private void adjustVelocity(KeyCode button, float time, float reverseTime, float timePeriod, float reverseTimePeriod, int speedDecayMod) {
-        if (Input.GetKey(button)) {
-            Debug.Log(button.ToString());
-            if (time < 1) {
-                time += (Time.deltaTime/timePeriod);
-            } else if (time >= 1) {
-                time = 1;
-            } if (reverseTime > 0) {
-                reverseTime -= (Time.deltaTime/reverseTimePeriod) * speedDecayMod;
-            } else if (reverseTime >= 0) {
-                reverseTime = 0;
-            }
-        }
+    /// <summary>
+    /// AdjustTime generates a float that denotes delta time for a specific movement state.
+    /// </summary>
+    /// <param name="button">
+    /// KeyCode used for a specific movement state.
+    /// </param>
+    /// <param name="time">
+    /// Current time spent in a specific movement state.
+    /// </param>
+    /// <param name="timePeriod">
+    /// Total time needed to reach max acceleration.
+    /// </param>
+    /// <param name="speedDecay">
+    /// Multiplier for Acceleration Decay when not pressing button.
+    /// </param>
+    /// <returns>
+    /// Float that denotes delta time for a specific movement state.
+    /// </returns>
+    private float adjustVelocity(KeyCode button, float time, float timePeriod, float speedDecay) {
+        if (Input.GetKey(button) && time < 1) { return (Time.deltaTime/timePeriod); } 
+        if (!Input.GetKey(button) && time > 0) { return (-Time.deltaTime/timePeriod) * speedDecay; }
+        else if (!Input.GetKey(button) && time < 0) { return -time; }
+        else { return 0; }
     }
     
+    /// <summary>
+    /// ApplyVelocity applies all four directional velocities to the player using the CharacterController component.
+    /// </summary>
     private void applyVelocity() {
-        velocity += new Vector3(forwardCurve.Evaluate(forwardT) * forwardMax, 0, 0);
-        velocity -= new Vector3(backwardCurve.Evaluate(backwardT) * backwardMax, 0, 0);
-        velocity += new Vector3(0, 0, rightCurve.Evaluate(rightT) * rightMax);
-        velocity -= new Vector3(0, 0, leftCurve.Evaluate(leftT) * leftMax);
+        velocity = Vector3.zero;
+        velocity += gameObject.transform.forward * forwardCurve.Evaluate(forwardT);
+        velocity -= gameObject.transform.forward * forwardCurve.Evaluate(backwardT);
+        velocity += gameObject.transform.right * forwardCurve.Evaluate(rightT);
+        velocity -= gameObject.transform.right * forwardCurve.Evaluate(leftT);
 
-        // Debug.Log();
-        if (Input.GetKeyDown(KeyCode.P)) {
-            Debug.Log(velocity);
-        }
         characterController.Move(velocity);
     }
-
-
-    // private void checkForInputs() {
-    //     if (Input.GetKeyDown(forward)) {
-    //         forwardT += (Time.deltaTime / forwardTimePeriod);
-    //     } else if (Input.GetKeyDown(backward)) {
-    //         forwardT += (Time.deltaTime / forwardTimePeriod);
-    //     }
-
-    //     // if (Input.GetButton(forwardButton) && forwardT < 1f) {
-    //     //     forwardT += (Time.deltaTime / forwardTimePeriod);
-    //     // } else if (Input.GetButton(forwardButton) && forwardT > 1f) {
-    //     //     forwardT = 1f;
-    //     // } else if (Input.GetButton(brakeButton) && forwardT > 0) {
-    //     //     forwardT -= (Time.deltaTime * 7 / forwardTimePeriod);
-    //     // } else if (Input.GetButton(brakeButton) && forwardT < 0) {
-    //     //     forwardT = 0;
-    //     // } else if (forwardT > 0) {
-    //     //     forwardT -= (Time.deltaTime * 4 / forwardTimePeriod);
-    //     // } else {
-    //     //     forwardT = 0;
-    //     // }
-    // }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 /// <author> Arjun Jaishankar </author>
 /// <version> 11/21/2019 </version>
 public class MovementManager : MonoBehaviour {
-    private CharacterController characterController;
+    [SerializeField] private CharacterController characterController;
     [Header("Animation Settings")]
     public Animator animator;
 
@@ -24,9 +24,11 @@ public class MovementManager : MonoBehaviour {
     [Header("Key Bindings")]
     public KeyCode forward, backward, right, left;
 
+    [Header("Camera Settings")]
+    public CameraManager mainCamera;
+
     // Start is called before the first frame update
     void Start() {
-        characterController = GetComponent<CharacterController>();
         forwardT = 0; backwardT = 0; rightT = 0; leftT = 0;
     }
 
@@ -35,6 +37,12 @@ public class MovementManager : MonoBehaviour {
         manageTime();
         manageAnimations();
         applyVelocity();
+        rotatePlayer();
+
+    }
+
+    void lateUpdate() {
+        // rotatePlayer();
     }
 
     /// <summary>
@@ -87,17 +95,35 @@ public class MovementManager : MonoBehaviour {
 
     private void manageAnimations() {
         if (forwardT > 0f || backwardT > 0f) {
-            Debug.Log("Running");
+            // Debug.Log("Running");
             animator.SetBool("isRunning", true);
             animator.SetBool("isStrafing", false);
         } else if (rightT > 0f || leftT > 0f) {
-            Debug.Log("Strafing");
+            // Debug.Log("Strafing");
             animator.SetBool("isRunning", false);
             animator.SetBool("isStrafing", true);
         } else {
-            Debug.Log("Idle");
+            // Debug.Log("Idle");
             animator.SetBool("isRunning", false);
             animator.SetBool("isStrafing", false);
         }
+    }
+
+    private void rotatePlayer() {
+        // Vector3 currentRotation = QuaternionToVector3(gameObject.transform.rotation);
+        // float cameraRotation = mainCamera.transform.rotation.y * Mathf.Rad2Deg;
+        // Debug.Log(cameraRotation);
+
+        // gameObject.transform.rotation = Quaternion.Euler(applyCameraRotation(gameObject, mainCamera.cameraRotation.y));
+
+        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, Quaternion.Euler(applyCameraRotation(gameObject, mainCamera.cameraRotation.y)), 0.6f);
+    }
+
+    private static Vector3 QuaternionToVector3(Quaternion quat) {
+        return new Vector3 (quat.x, quat.y, quat.z);
+    }
+
+    private static Vector3 applyCameraRotation(GameObject gameObject, float cameraRotation) {
+        return new Vector3 (gameObject.transform.rotation.x, cameraRotation, gameObject.transform.rotation.z);
     }
 }

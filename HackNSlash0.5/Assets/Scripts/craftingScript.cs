@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class craftingScript : MonoBehaviour
 {
+    public Button getBlock;
+    public Text remaining;
+    public Text used;
+    public int blocksUsed = 0;
+    public int blocksRemaining = 20;
+    public GameObject selectedBlock;
     public GameObject cube;
     public GameObject camera;
     public GameObject sword;
@@ -15,35 +21,35 @@ public class craftingScript : MonoBehaviour
     {
         sword = GameObject.Find("Sword");
         cube = (UnityEngine.GameObject)Resources.Load("swordPiece");
+        getBlock.onClick.AddListener(giveCraftingMat);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        float xRotation = Input.GetAxis("Vertical") * rotSpeed;
-        float yRotation = Input.GetAxis("Horizontal") * rotSpeed;
+        float xRotation = Input.GetAxis("Mouse Y") * rotSpeed;
+        float yRotation = Input.GetAxis("Mouse X") * rotSpeed;
         float scrollMove = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed * Time.deltaTime;
 
         //yRotation *= Time.deltaTime;
         //xRotation *= Time.deltaTime;
 
-        if (Input.GetKeyDown("space"))
-        {
-            craftingObj = Instantiate(cube);
-            craftingObj.tag = "craftingObj";
-            recursiveLayerChange(LayerMask.NameToLayer("Ignore Raycast"), craftingObj);
-        }
         if (craftingObj != null)
         {
             CheckTag();
         }
-        camera.transform.Rotate(0, -yRotation, 0, Space.World);
-        camera.transform.Rotate(xRotation, 0, 0);
+        else
+        {
+            SelectBlock();
+        }
+        if (Input.GetMouseButton(1))
+        {
+            camera.transform.Rotate(0, yRotation, 0, Space.World);
+            camera.transform.Rotate(-xRotation, 0, 0);
+        }
         camera.transform.GetChild(0).transform.Translate(0, 0, scrollMove);
     }
-
-
+    
     bool CheckTag()
     {
 
@@ -68,6 +74,8 @@ public class craftingScript : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    blocksUsed++;
+                    blocksRemaining--;
                     craftingObj.transform.SetParent(sword.transform);
                     GameObject baseObj = craftingObj.transform.GetChild(0).gameObject;
                     baseObj.layer = LayerMask.NameToLayer("Default");
@@ -75,7 +83,9 @@ public class craftingScript : MonoBehaviour
                     {
                         baseObj.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("snapSpot");
                     }
+                    updateText();
                     craftingObj = null;
+                    giveCraftingMat();
                 }
             }
         }
@@ -108,5 +118,31 @@ public class craftingScript : MonoBehaviour
             }
         }
     }
-    
+
+    void giveCraftingMat()
+    {
+        if (blocksRemaining > 0)
+        {
+            craftingObj = Instantiate(cube);
+            craftingObj.tag = "craftingObj";
+            recursiveLayerChange(LayerMask.NameToLayer("Ignore Raycast"), craftingObj);
+        }
+    }
+
+
+    void SelectBlock()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+             
+        }
+    }
+
+    void updateText()
+    {
+        remaining.text = "Blocks Remaining: " + blocksRemaining;
+        used.text = "Blocks Used: " + blocksUsed;
+    }
 }

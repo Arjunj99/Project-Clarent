@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    //public GameObject swordHolder;
     private static GameManager instance = null;
     public static GameManager Instance {
         get { return instance; }

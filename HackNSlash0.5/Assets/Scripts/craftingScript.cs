@@ -13,6 +13,8 @@ public class craftingScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sword = GameObject.Find("Sword");
+        cube = (UnityEngine.GameObject)Resources.Load("swordPiece");
     }
 
     // Update is called once per frame
@@ -95,7 +97,7 @@ public class craftingScript : MonoBehaviour
         }
     }
 
-    void toggleSnapSpots(bool ac)
+    public void toggleSnapSpots(bool ac)
     {
         for (int i = 1; i < sword.transform.childCount; i++)
         {
@@ -106,4 +108,5 @@ public class craftingScript : MonoBehaviour
             }
         }
     }
+    
 }

@@ -39,6 +39,10 @@ public class MovementManager : MonoBehaviour {
         applyVelocity();
         rotatePlayer();
 
+        if (Input.GetKeyDown(KeyCode.X)) {
+            animator.SetTrigger("Heavy1");
+        }
+
     }
 
     void lateUpdate() {

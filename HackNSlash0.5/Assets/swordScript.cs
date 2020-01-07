@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class swordScript : MonoBehaviour
 {
+    public Vector3 swordScale;
     private GameObject swordHolder;
     private static swordScript instance = null;
     public static swordScript swordInstance
@@ -48,7 +49,7 @@ public class swordScript : MonoBehaviour
             {
                 toggleSnapSpots(false);
                 SceneManager.LoadScene(0);
-                this.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                this.transform.localScale = swordScale;
                 //this.transform.parent = getSwordHolder().transform.parent;
                 //this.transform.position = getSwordHolder().transform.position;
             }

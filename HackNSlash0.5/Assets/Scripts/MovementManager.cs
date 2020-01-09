@@ -17,7 +17,7 @@ public class MovementManager : MonoBehaviour {
     private Vector3 velocity = Vector3.zero;
 
     [Header("Acceleration Curves")]
-    [SerializeField] private AnimationCurve forwardCurve, backwardCurve, rightCurve, leftCurve;
+    [SerializeField] private AnimationCurve xCurve, yCurve;
     public float forwardT, backwardT, rightT, leftT;
     [SerializeField] private float forwardTimePeriod, backwardTimePeriod, rightTimePeriod, leftTimePeriod; 
 
@@ -27,21 +27,41 @@ public class MovementManager : MonoBehaviour {
     [Header("Camera Settings")]
     public CameraManager mainCamera;
 
+    private float slowSpeed, fastSpeed;
+
+    public Vector2 inputAxis = new Vector2(0f, 0f);
+
     // Start is called before the first frame update
     void Start() {
         forwardT = 0; backwardT = 0; rightT = 0; leftT = 0;
+        slowSpeed = forwardMax;
+        fastSpeed = forwardMax * 5;
     }
 
     // Update is called once per frame
     void Update() {
-        manageTime();
+        inputAxis.x = Input.GetAxis("Horizontal");
+        inputAxis.y = Input.GetAxis("Vertical");
+
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            forwardMax = Mathf.Lerp(forwardMax, fastSpeed, 0.3f);
+        } else {
+            forwardMax = Mathf.Lerp(forwardMax, slowSpeed, 0.3f);
+        }
+
+
+        // manageTime();
         manageAnimations();
         applyVelocity();
         rotatePlayer();
 
-        if (Input.GetKeyDown(KeyCode.X)) {
-            animator.SetTrigger("Heavy1");
+        if (!characterController.isGrounded) {
+            characterController.Move(Vector3.up * -1);
         }
+
+        // if (Input.GetKeyDown(KeyCode.X)) {
+        //     animator.SetTrigger("Heavy1");
+        // }
 
     }
 
@@ -89,28 +109,31 @@ public class MovementManager : MonoBehaviour {
     /// </summary>
     private void applyVelocity() {
         velocity = Vector3.zero;
-        velocity += gameObject.transform.forward * forwardCurve.Evaluate(forwardT);
-        velocity -= gameObject.transform.forward * forwardCurve.Evaluate(backwardT);
-        velocity += gameObject.transform.right * forwardCurve.Evaluate(rightT);
-        velocity -= gameObject.transform.right * forwardCurve.Evaluate(leftT);
+        velocity += gameObject.transform.forward * yCurve.Evaluate(inputAxis.y) * forwardMax;
+        // velocity -= gameObject.transform.forward * forwardCurve.Evaluate(backwardT);
+        velocity += gameObject.transform.right * xCurve.Evaluate(inputAxis.x) * rightMax;
+        // velocity -= gameObject.transform.right * forwardCurve.Evaluate(leftT);
 
         characterController.Move(velocity);
     }
 
     private void manageAnimations() {
-        if (forwardT > 0f || backwardT > 0f) {
-            // Debug.Log("Running");
-            animator.SetBool("isRunning", true);
-            animator.SetBool("isStrafing", false);
-        } else if (rightT > 0f || leftT > 0f) {
-            // Debug.Log("Strafing");
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isStrafing", true);
-        } else {
-            // Debug.Log("Idle");
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isStrafing", false);
-        }
+        animator.SetFloat("SpeedX", xCurve.Evaluate(inputAxis.x));
+        animator.SetFloat("SpeedY", xCurve.Evaluate(inputAxis.y));
+
+        // if (forwardT > 0f || backwardT > 0f) {
+        //     // Debug.Log("Running");
+        //     animator.SetBool("isRunning", true);
+        //     animator.SetBool("isStrafing", false);
+        // } else if (rightT > 0f || leftT > 0f) {
+        //     // Debug.Log("Strafing");
+        //     animator.SetBool("isRunning", false);
+        //     animator.SetBool("isStrafing", true);
+        // } else {
+        //     // Debug.Log("Idle");
+        //     animator.SetBool("isRunning", false);
+        //     animator.SetBool("isStrafing", false);
+        // }
     }
 
     private void rotatePlayer() {

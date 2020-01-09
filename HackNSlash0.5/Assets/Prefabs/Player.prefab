@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 3878547113985106417}
   - component: {fileID: 3878547113985106419}
   - component: {fileID: 844088253039709150}
+  - component: {fileID: 2093069847}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -179,22 +180,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 844088253039709150}
   animator: {fileID: 9141009976559360693}
-  forwardMax: 3
-  backwardMax: 3
-  rightMax: 3
-  leftMax: 3
-  forwardCurve:
+  forwardMax: 0.2
+  backwardMax: 0.2
+  rightMax: 0.2
+  leftMax: 0.2
+  xCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: -1
+      value: -0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: -0.7059146
+      value: -0.37733078
+      inSlope: 0.41198045
+      outSlope: 0.41198045
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.30246696
+      value: -0.28276432
+      inSlope: 0.13721813
+      outSlope: 0.13721813
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7576098
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.1245534
+      outSlope: 1.1245534
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.22595306
+      value: 0.6409041
+      inSlope: 1.333377
+      outSlope: 1.333377
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.54532063
+      value: 0.85934114
+      inSlope: 0.423027
+      outSlope: 0.423027
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -207,12 +253,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  backwardCurve:
+  yCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: -1
+      value: -1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -220,53 +266,32 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: -0.23228888
+      value: -0.64765024
+      inSlope: 1.3423345
+      outSlope: 1.3423345
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  rightCurve:
-    serializedVersion: 2
-    m_Curve:
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 1.2324365
+      outSlope: 1.2324365
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.2715393
+      value: 0.6613182
+      inSlope: 1.3468872
+      outSlope: 1.3468872
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  leftCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -292,6 +317,7 @@ MonoBehaviour:
   right: 100
   left: 97
   mainCamera: {fileID: 0}
+  inputAxis: {x: 0, y: 0}
 --- !u!143 &844088253039709150
 CharacterController:
   m_ObjectHideFlags: 0
@@ -310,6 +336,25 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2093069847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3878547113985106422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c4f48674c2a14169a0388fd39f14b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboInputs: 000000000000000000000000
+  currentHit: 0
+  comboResetTime: 3
+  heavyButton: Fire2
+  lightButton: Fire1
+  anim: {fileID: 9141009976559360693}
+  attacking: 0
 --- !u!1001 &6137231100244810965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397,6 +442,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerIdle
       objectReference: {fileID: 0}
+    - target: {fileID: 1651062367082650294, guid: 82e74b0903a5c4dd88745ab31aac4996,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c244c1fc561c40fba9bdc1d15dbaa5e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82e74b0903a5c4dd88745ab31aac4996, type: 3}
 --- !u!4 &1175835214506358735 stripped

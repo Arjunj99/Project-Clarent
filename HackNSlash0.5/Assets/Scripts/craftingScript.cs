@@ -76,7 +76,15 @@ public class craftingScript : MonoBehaviour
                 {
                     blocksUsed++;
                     blocksRemaining--;
-                    craftingObj.transform.SetParent(sword.transform);
+                    if(hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("snapSpot"))
+                    {
+                        craftingObj.transform.SetParent(hitInfo.transform.parent);
+                    }
+                    else
+                    {
+                        craftingObj.transform.SetParent(hitInfo.transform);
+
+                    }
                     GameObject baseObj = craftingObj.transform.GetChild(0).gameObject;
                     baseObj.layer = LayerMask.NameToLayer("Default");
                     for (int i = 0; i < baseObj.transform.childCount; i++)

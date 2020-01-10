@@ -1145,6 +1145,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3878547112147812557}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &2093069845 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 844088253039709150, guid: 9391c89a0bc3347d9a3327ae2cc78138,
+    type: 3}
+  m_PrefabInstance: {fileID: 3878547112147812557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2093069847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1576,6 +1582,16 @@ PrefabInstance:
       propertyPath: leftMax
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 3878547113985106419, guid: 9391c89a0bc3347d9a3327ae2cc78138,
+        type: 3}
+      propertyPath: characterController
+      value: 
+      objectReference: {fileID: 2093069845}
+    - target: {fileID: 3878547113985106419, guid: 9391c89a0bc3347d9a3327ae2cc78138,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 141307778}
     - target: {fileID: 3878547113985106422, guid: 9391c89a0bc3347d9a3327ae2cc78138,
         type: 3}
       propertyPath: m_Name

@@ -465,12 +465,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1170212123 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1680658245960347198, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1694759289932826116}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1209389957 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1694759288991946113, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
@@ -795,6 +789,83 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1787363720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1787363721}
+  - component: {fileID: 1787363723}
+  - component: {fileID: 1787363722}
+  m_Layer: 5
+  m_Name: Nudge Increment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1787363721
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787363720}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1997555494}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -91.2, y: -72}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1787363722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787363720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Nudge Increment: '
+--- !u!222 &1787363723
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787363720}
+  m_CullTransparentMesh: 0
 --- !u!1 &1796521191
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,16 +896,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   getBlock: {fileID: 1612588136}
+  getJoint: {fileID: 0}
   remaining: {fileID: 164865375}
   used: {fileID: 605156270}
+  nudgeIncText: {fileID: 1787363722}
   blocksUsed: 0
   blocksRemaining: 20
-  selectedBlock: {fileID: 0}
-  cube: {fileID: 1170212123}
+  temp: {fileID: 0}
+  currentCraftingMat: {fileID: 0}
+  activeObj: {fileID: 0}
   camera: {fileID: 1023270255}
   sword: {fileID: 1209389957}
+  selectMat: {fileID: 0}
+  nudgeInc: 0.05
+  rotInc: 10
   rotSpeed: 10
   scrollSpeed: 100
+  savedMat: {fileID: 0}
 --- !u!4 &1796521193
 Transform:
   m_ObjectHideFlags: 0
@@ -942,6 +1020,7 @@ RectTransform:
   - {fileID: 1612588135}
   - {fileID: 605156269}
   - {fileID: 164865374}
+  - {fileID: 1787363721}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -957,6 +1036,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.475
+      objectReference: {fileID: 0}
+    - target: {fileID: 622216738314102905, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1237786750453968258, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
         type: 3}
       propertyPath: swordScale.x
@@ -1046,6 +1160,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1694759290381007877, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7,
+        type: 3}
+      propertyPath: m_Name
+      value: baseBlade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c82efcf6eaeaa4ce8921b39cefe1f8b7, type: 3}

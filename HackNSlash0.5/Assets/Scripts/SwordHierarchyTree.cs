@@ -8,15 +8,13 @@ public class SwordHierarchyTree
     Vector3 position;
     Quaternion rotation;
     SwordHierarchyTree parent;
-    string type;
     List<SwordHierarchyTree> children = new List<SwordHierarchyTree>();
-    public SwordHierarchyTree(GameObject g, Vector3 pos, Quaternion rot, SwordHierarchyTree p, string t)
+    public SwordHierarchyTree(GameObject g, Vector3 pos, Quaternion rot, SwordHierarchyTree p)
     {
         block = g;
         position = pos;
         rotation = rot;
         parent = p;
-        type = t;
         if (p != null)
         {
             p.addChild(this);
@@ -48,11 +46,15 @@ public class SwordHierarchyTree
     {
         return rotation;
     }
-
-    public string getType()
+    public SwordHierarchyTree getParent()
     {
-        return type;
+        return parent;
     }
+
+    //public string getType()
+    //{
+    //    return type;
+    //}
 
 
 }

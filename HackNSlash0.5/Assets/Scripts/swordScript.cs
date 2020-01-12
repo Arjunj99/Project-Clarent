@@ -6,6 +6,7 @@ public class swordScript : MonoBehaviour
 {
     public Vector3 swordScale;
     private GameObject swordHolder;
+    private SwordHierarchyTree hierarchy;
     private static swordScript instance = null;
     public static swordScript swordInstance
     {
@@ -22,19 +23,22 @@ public class swordScript : MonoBehaviour
         {
             instance = this;
         }
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
     }
     // Start is called before the first frame update
     void Start()
     {
+        GameObject baseblock = transform.GetChild(1).GetChild(0).gameObject;
+        hierarchy = new SwordHierarchyTree(baseblock, baseblock.transform.position, baseblock.transform.rotation, null);
+        transform.GetChild(1).GetChild(0).GetComponent<swordHierarchyNode>().add(hierarchy);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("p"))
         {
-            if(SceneManager.GetActiveScene() == SceneManager.GetSceneByBuildIndex(0))
+            if (SceneManager.GetActiveScene() == SceneManager.GetSceneByBuildIndex(0))
             {
                 this.gameObject.transform.SetParent(null);
                 DontDestroyOnLoad(this.gameObject);
@@ -43,7 +47,7 @@ public class swordScript : MonoBehaviour
                 this.transform.position = new Vector3(0, 0, 0);
                 this.transform.rotation = Quaternion.identity;
                 toggleSnapSpots(true);
-               
+
             }
             else
             {
@@ -62,13 +66,15 @@ public class swordScript : MonoBehaviour
 
     public void toggleSnapSpots(bool ac)
     {
-        for (int i = 1; i < this.gameObject.transform.childCount; i++)
+        for (int i = 1; i < transform.childCount; i++)
         {
-            Transform piece = this.gameObject.transform.GetChild(i).transform.GetChild(0);
-            for (int j = 0; j < piece.childCount; j++)
-            {
-                piece.GetChild(j).gameObject.SetActive(ac);
-            }
+            transform.GetChild(i).GetChild(0).GetComponent<swordHierarchyNode>().toggleSnapspots(ac);
         }
     }
+
+    //public void addPiece(GameObject parent, GameObject child)
+    //{
+    //    parent.GetComponent<swordHierarchyNode>().getSelf().addChild(child.GetComponent<swordHierarchyNode>().getSelf());
+    //}
+
 }

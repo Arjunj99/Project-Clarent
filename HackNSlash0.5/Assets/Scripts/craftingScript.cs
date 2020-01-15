@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class craftingScript : MonoBehaviour
 {
 
-
     enum mode { SELECT, CRAFT, SELECTED };
     mode playMode = mode.SELECT;
     //UI Elements
@@ -17,7 +16,7 @@ public class craftingScript : MonoBehaviour
 
     //Crafting REsources
     public int blocksUsed = 0;
-    public int blocksRemaining = 20;
+    public int blocksRemaining = 40;
     public GameObject temp;
     //Type of object currently crafting with
     public GameObject currentCraftingMat;
@@ -36,6 +35,7 @@ public class craftingScript : MonoBehaviour
     public float rotSpeed = 1000;
     public float scrollSpeed = 10;
     public Material savedMat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +90,7 @@ public class craftingScript : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo))
         {
-            print(hitInfo.transform.gameObject.name);
+            //print(hitInfo.transform.gameObject.name);
 
             if (hitInfo.collider.gameObject.tag == "buildable")
             {
@@ -187,6 +187,10 @@ public class craftingScript : MonoBehaviour
             activeObj.tag = "craftingObj";
             recursiveLayerChange(LayerMask.NameToLayer("Ignore Raycast"), activeObj);
         }
+        else
+        {
+            interrupt(playMode);
+        }
     }
     void giveJointMat()
     {
@@ -259,6 +263,7 @@ public class craftingScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Backspace) && activeObj.name != "baseBlade")
         {
             Destroy(activeObj.transform.parent.gameObject);
+            blocksRemaining += 100;
             interrupt(playMode);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))

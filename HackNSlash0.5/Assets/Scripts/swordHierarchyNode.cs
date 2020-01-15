@@ -51,6 +51,11 @@ public class swordHierarchyNode : MonoBehaviour
 
     }
 
+    public int getSnapSpots()
+    {
+        return snapSpots.Length;
+    }
+
     public void addChild(swordHierarchyNode g)
     {
         children.Add(g);

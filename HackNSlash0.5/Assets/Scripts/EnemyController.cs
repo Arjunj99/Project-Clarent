@@ -7,7 +7,8 @@ public class EnemyController : MonoBehaviour{
     public enum attackType {SideSlash, DownSlash, SpinSlash};
     public Animator animator;
     private bool isAttacking = false;
-
+    public bool invincible = false;
+    private float iFrames = 1;
     // Start is called before the first frame update
     void Start() {
         cc = gameObject.GetComponent<CharacterController>();
@@ -134,5 +135,21 @@ public class EnemyController : MonoBehaviour{
             gameObject.transform.Rotate(new Vector3(0f, speed, 0f));
             yield return 0;
         }
+    }
+
+    public void takeDamage(int damage)
+    {
+        if (!invincible)
+        {
+            StartCoroutine(wasHit());
+            print("ouch");
+        }
+    }
+
+    IEnumerator wasHit()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(iFrames);
+        invincible = false;
     }
 }

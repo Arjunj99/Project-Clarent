@@ -7,6 +7,8 @@ public class swordScript : MonoBehaviour
     public Vector3 swordScale;
     private GameObject swordHolder;
     private SwordHierarchyTree hierarchy;
+    public string enemy;
+    public GameObject parent;
     private static swordScript instance = null;
     public static swordScript swordInstance
     {
@@ -42,11 +44,12 @@ public class swordScript : MonoBehaviour
             {
                 this.gameObject.transform.SetParent(null);
                 DontDestroyOnLoad(this.gameObject);
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(1); 
                 this.transform.localScale = new Vector3(1, 1, 1);
                 this.transform.position = new Vector3(0, 0, 0);
                 this.transform.rotation = Quaternion.identity;
                 toggleSnapSpots(true);
+                Destroy(this.gameObject.GetComponent<Rigidbody>());
 
             }
             else
@@ -54,6 +57,9 @@ public class swordScript : MonoBehaviour
                 toggleSnapSpots(false);
                 SceneManager.LoadScene(0);
                 this.transform.localScale = swordScale;
+                Rigidbody rb = this.gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
                 //this.transform.parent = getSwordHolder().transform.parent;
                 //this.transform.position = getSwordHolder().transform.position;
             }
@@ -70,6 +76,25 @@ public class swordScript : MonoBehaviour
         {
             transform.GetChild(i).GetChild(0).GetComponent<swordHierarchyNode>().toggleSnapspots(ac);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.transform.root.tag.Equals("enemy"))
+        {
+            print("yes");
+            if (parent.GetComponent<ComboManager>().attacking == true)
+            {
+                print("yes2");
+                other.transform.root.GetComponent<EnemyController>().takeDamage(2);
+            }
+        }
+    }
+
+    public void setParent(GameObject nParent)
+    {
+        parent = nParent;
     }
 
     //public void addPiece(GameObject parent, GameObject child)

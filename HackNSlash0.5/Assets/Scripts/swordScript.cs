@@ -9,6 +9,7 @@ public class swordScript : MonoBehaviour
     private SwordHierarchyTree hierarchy;
     public string enemy;
     public GameObject parent;
+    public GameManager GameManager;
     private static swordScript instance = null;
     public static swordScript swordInstance
     {
@@ -50,7 +51,6 @@ public class swordScript : MonoBehaviour
                 this.transform.rotation = Quaternion.identity;
                 toggleSnapSpots(true);
                 Destroy(this.gameObject.GetComponent<Rigidbody>());
-
             }
             else
             {
@@ -60,6 +60,7 @@ public class swordScript : MonoBehaviour
                 Rigidbody rb = this.gameObject.AddComponent<Rigidbody>();
                 rb.isKinematic = true;
                 rb.useGravity = false;
+                //GameManager.getSwordHandler(GameObject.Find("Player")).setSword(this.gameObject);
                 //this.transform.parent = getSwordHolder().transform.parent;
                 //this.transform.position = getSwordHolder().transform.position;
             }
@@ -83,10 +84,8 @@ public class swordScript : MonoBehaviour
 
         if (other.transform.root.tag.Equals("enemy"))
         {
-            print("yes");
             if (parent.GetComponent<ComboManager>().attacking == true)
             {
-                print("yes2");
                 other.transform.root.GetComponent<EnemyController>().takeDamage(2);
             }
         }
@@ -97,9 +96,6 @@ public class swordScript : MonoBehaviour
         parent = nParent;
     }
 
-    //public void addPiece(GameObject parent, GameObject child)
-    //{
-    //    parent.GetComponent<swordHierarchyNode>().getSelf().addChild(child.GetComponent<swordHierarchyNode>().getSelf());
-    //}
+   
 
 }

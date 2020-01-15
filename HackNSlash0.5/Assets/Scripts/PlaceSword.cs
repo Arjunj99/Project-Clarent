@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class PlaceSword : MonoBehaviour
 {
+    GameObject sword;
     // Start is called before the first frame update
     void Start()
     {
-        GameObject sword = GameObject.Find("Sword");
-        sword.transform.parent = this.transform.parent;
-        sword.transform.position = this.transform.position;
-        sword.transform.rotation = this.transform.rotation;
-        sword.GetComponent<swordScript>().setParent(this.transform.root.gameObject);
     }
 
     // Update is called once per frame
@@ -24,5 +20,32 @@ public class PlaceSword : MonoBehaviour
     {
         
 
+    }
+
+    void snap()
+    {
+        sword.transform.parent = this.transform.parent;
+        sword.transform.position = this.transform.position;
+        sword.transform.rotation = this.transform.rotation;
+        sword.GetComponent<swordScript>().setParent(this.transform.root.gameObject);
+    }
+
+    void snapEnemy()
+    {
+        sword.transform.parent = this.transform.parent;
+        sword.transform.position = this.transform.position;
+        sword.transform.rotation = this.transform.rotation;
+        sword.GetComponent<EnemySwordScript>().setParent(this.transform.root.gameObject);
+    }
+
+    public void setSword(GameObject nSword)
+    {
+        sword = nSword;
+        snap();
+    }
+    public void setSword(GameObject nSword, bool t)
+    {
+        sword = nSword;
+        snapEnemy();
     }
 }

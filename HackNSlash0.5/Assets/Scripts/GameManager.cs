@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
-
+    public GameObject enemySword;
     //public GameObject swordHolder;
     private static GameManager instance = null;
     public static GameManager Instance {
@@ -32,24 +32,41 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            SpawnEnemy(new Vector3(0, 2, 0));
+        }
     }
 
     /// <summary> SpawnEnemy spawns an Enemy at Origin. </summary>
     public void SpawnEnemy() {
-        Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity);
+        print("new");
+        GameObject enemy = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity);
+        //enemy.GetComponentInChildren<PlaceSword>().setSword(Instantiate(enemySword));
+
     }
 
     /// <summary> SpawnEnemy spawns an Enemy at spawnPoints. </summary>
     /// <param name="spawnPoints"> Points in worldSpace where EnemyPrefabs will be spawned. </param>
     public void SpawnEnemy(params Vector3[] spawnPoints) {
         foreach (Vector3 spawnPoint in spawnPoints) {
-            Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+            GameObject eSword = Instantiate(enemySword);
+            Rigidbody rb = eSword.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            enemy.GetComponentInChildren<PlaceSword>().setSword(eSword, true);
         }
     }
+
+    public PlaceSword getSwordHandler(GameObject unit)
+    {
+        return unit.GetComponentInChildren<PlaceSword>();
+    }
+
 }

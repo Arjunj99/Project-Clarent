@@ -6,11 +6,16 @@ public class EnemyController : MonoBehaviour{
     public CharacterController cc; // Character Controller Component
     public enum attackType {SideSlash, DownSlash, SpinSlash};
     public Animator animator;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
     public bool invincible = false;
     private float iFrames = 1;
+    float strafeDir;
+    GameObject player;
+
+    bool strafeB = false;
     // Start is called before the first frame update
     void Start() {
+        player = GameObject.Find("Player");
         cc = gameObject.GetComponent<CharacterController>();
     }
 
@@ -19,6 +24,7 @@ public class EnemyController : MonoBehaviour{
         if (!cc.isGrounded) { // Gravity
             cc.Move(Vector3.up * -1);
         }
+        enemyLogic();
 
         // Manages isAttacking  // HOLY CRAP THIS IS UGLY
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Enter")
@@ -67,6 +73,13 @@ public class EnemyController : MonoBehaviour{
                 Debug.Log("ERROR");
                 break;
         }
+    }
+
+    public void cancelattack()
+    {
+        animator.ResetTrigger("SideSlash");
+        animator.ResetTrigger("DownSlash");
+        animator.ResetTrigger("SpinSlash");
     }
 
     /// <summary> Plays a specified Attack Animation. </summary>
@@ -124,6 +137,25 @@ public class EnemyController : MonoBehaviour{
         animator.SetFloat("SpeedY", 0);
     }
 
+    public void moveUpdate(Vector3 moveVector, float speed)
+    {
+        Vector3 totalVector = Vector3.zero;
+        Vector3 localVector = (transform.forward * moveVector.normalized.z) + (transform.right * moveVector.normalized.x);
+
+        animator.SetFloat("SpeedX", moveVector.normalized.x);
+        animator.SetFloat("SpeedY", moveVector.normalized.z);
+
+        while (totalVector.magnitude < moveVector.magnitude)
+        {
+            localVector = (transform.forward * moveVector.normalized.z) + (transform.right * moveVector.normalized.x);
+            totalVector += (moveVector.normalized * speed);
+            cc.Move(localVector * speed);
+            Debug.Log("100");
+            //yield return 0;
+        }
+
+    }
+
     /// <summary> Rotates the Enemy a set Rotation at a specified speed. </summary>
     /// <param name="rotation"> Amount the enemy should be rotated. </param>
     /// <param name="speed"> Rotation Speed of the Enemy. </param>
@@ -142,7 +174,7 @@ public class EnemyController : MonoBehaviour{
         if (!invincible)
         {
             StartCoroutine(wasHit());
-            print("ouch");
+            Destroy(gameObject);
         }
     }
 
@@ -151,5 +183,81 @@ public class EnemyController : MonoBehaviour{
         invincible = true;
         yield return new WaitForSeconds(iFrames);
         invincible = false;
+    }
+
+    void lookAtPlayer()
+    {
+        this.transform.LookAt(player.transform);
+    }
+
+    void approachPlayer()
+    {
+        moveUpdate(Vector3.forward*0.1f, 0.1f);
+    }
+
+    float distToPlayer()
+    {
+        Vector3 dir = player.transform.position - this.transform.position;
+        return dir.magnitude;
+    }
+
+    void strafe()
+    {
+        if(!strafeB)
+        {
+            strafeDir = Random.Range(-1, 1);
+            StartCoroutine(pickStrafe());
+        }
+        if (strafeDir >= 0)
+        {
+            moveUpdate(Vector3.left * 0.2f, 0.05f);
+        }
+        else
+        {
+            moveUpdate(Vector3.right * 0.2f, 0.05f);
+
+        }
+    }
+
+    void enemyLogic()
+    {
+        if (!isAttacking)
+        {
+            if (distToPlayer() > 6 && player.GetComponent<ComboManager>().attacking)
+            {
+                lookAtPlayer();
+                approachPlayer();
+                strafe();
+                cancelattack();
+            } else if (distToPlayer() > 6.5)
+            {
+                cancelattack();
+                lookAtPlayer();
+                approachPlayer();
+            }
+            else if (player.GetComponent<ComboManager>().attacking)
+            {
+                lookAtPlayer();
+                strafe();
+                attack();
+            } else if (distToPlayer() <= 6.5)
+            {
+                approachPlayer();
+                attack();
+            } else
+            {
+                lookAtPlayer();
+                attack();
+                animator.SetFloat("SpeedX", 0);
+                animator.SetFloat("SpeedY", 0);
+            }
+        }
+    }
+
+    IEnumerator pickStrafe()
+    {
+        strafeB = true;
+        yield return new WaitForSeconds(2);
+        strafeB = false;
     }
 }

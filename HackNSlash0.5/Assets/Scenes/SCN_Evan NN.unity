@@ -978,8 +978,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92, y: -68.6}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 92, y: -88}
+  m_SizeDelta: {x: 160, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500928859
 MonoBehaviour:
@@ -1086,10 +1086,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 604986867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fbf4a9af13e4b4bab2ddb35bf75862, type: 3}
+  m_Script: {fileID: 11500000, guid: e1db77df2cf0d4acdabfc1fb28e44698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  learnR: 0.1
+  learnR: 0
   CoM: {x: 0, y: 0, z: 0}
   sword: {fileID: 1209389957}
   buttons:
@@ -1098,11 +1098,6 @@ MonoBehaviour:
   - {fileID: 488805813}
   - {fileID: 500928859}
   text: {fileID: 206431099}
-  planes:
-  - {fileID: 1305883726}
-  - {fileID: 316966785}
-  - {fileID: 182022536}
-  point: {fileID: 243617989}
 --- !u!4 &604986869
 Transform:
   m_ObjectHideFlags: 0
@@ -1983,6 +1978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26a3f419b5d04482af284e68d7c9ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 0}
+  enemySword: {fileID: 0}
 --- !u!4 &1766073832
 Transform:
   m_ObjectHideFlags: 0

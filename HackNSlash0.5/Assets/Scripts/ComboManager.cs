@@ -32,6 +32,11 @@ public class ComboManager : MonoBehaviour {
         } else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Exit")) {
             attacking = false;
         }
+
+        testAnimation("test");
+
+
+        
     }
 
     void LateUpdate() {
@@ -97,6 +102,12 @@ public class ComboManager : MonoBehaviour {
             anim.SetTrigger("Light2");
         } else if (comboInputs[0] == input.Light) {
             anim.SetTrigger("Light1");
+        }
+    }
+
+    private void testAnimation(string trigger) {
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            anim.SetTrigger(trigger);
         }
     }
 }

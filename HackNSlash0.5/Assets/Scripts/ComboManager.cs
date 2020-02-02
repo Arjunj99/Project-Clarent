@@ -26,11 +26,17 @@ public class ComboManager : MonoBehaviour {
         addInput();
         timerResetCombo();
 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Enter")) {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Enter")
+        || anim.GetCurrentAnimatorStateInfo(0).IsName("Enter 0")) {
             attacking = true;
         } else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Exit")) {
             attacking = false;
         }
+
+        testAnimation("test");
+
+
+        
     }
 
     void LateUpdate() {
@@ -88,6 +94,20 @@ public class ComboManager : MonoBehaviour {
             anim.SetTrigger("Heavy2");
         } else if (comboInputs[0] == input.Heavy) {
             anim.SetTrigger("Heavy1");
+        }
+
+        if (comboInputs[2] == input.Light) {
+            anim.SetTrigger("Light3");
+        } else if (comboInputs[1] == input.Light) {
+            anim.SetTrigger("Light2");
+        } else if (comboInputs[0] == input.Light) {
+            anim.SetTrigger("Light1");
+        }
+    }
+
+    private void testAnimation(string trigger) {
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            anim.SetTrigger(trigger);
         }
     }
 }

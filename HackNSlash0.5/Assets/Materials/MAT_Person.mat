@@ -23,7 +23,7 @@ Material:
   m_Name: MAT_Person
   m_Shader: {fileID: -6465566751694194690, guid: e783082f444064116ac55880d38a58c8,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

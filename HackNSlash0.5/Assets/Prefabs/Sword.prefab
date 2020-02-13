@@ -55,10 +55,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5ef9318ee7eb459599151352061dcf6, type: 2}
+  - {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -138,6 +139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordScale: {x: 0.3, y: 0.3, z: 0.3}
+  enemy: 
+  parent: {fileID: 0}
+  GameManager: {fileID: 0}
 --- !u!1 &1694759289208400383
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,10 +197,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5ef9318ee7eb459599151352061dcf6, type: 2}
+  - {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -320,10 +325,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5ef9318ee7eb459599151352061dcf6, type: 2}
+  - {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -412,10 +418,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5ef9318ee7eb459599151352061dcf6, type: 2}
+  - {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -504,10 +511,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5ef9318ee7eb459599151352061dcf6, type: 2}
+  - {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -603,6 +611,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 927066732206683002, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5147703ddc02541d9923ec3bc0fbb75a, type: 2}
+    - target: {fileID: 1106097001345591225, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5147703ddc02541d9923ec3bc0fbb75a, type: 2}
     - target: {fileID: 2029450907050691961, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
         type: 3}
       propertyPath: m_Name
@@ -613,6 +631,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: baseobject
       objectReference: {fileID: 0}
+    - target: {fileID: 2088567991160938311, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e9489d12f0c134cf297afc2ae696e45d, type: 2}
+    - target: {fileID: 7140558762623331719, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5147703ddc02541d9923ec3bc0fbb75a, type: 2}
+    - target: {fileID: 7581036591012299658, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5147703ddc02541d9923ec3bc0fbb75a, type: 2}
+    - target: {fileID: 8837688249843779523, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5147703ddc02541d9923ec3bc0fbb75a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c, type: 3}
 --- !u!4 &622216738314102905 stripped

@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
-        {
-            SpawnEnemy(new Vector3(0, 2, 0));
-        }
+        //if(Input.GetKeyDown(KeyCode.G))
+        //{
+        //    SpawnEnemy(new Vector3(0, 2, 0));
+        //}
     }
 
     /// <summary> SpawnEnemy spawns an Enemy at Origin. </summary>

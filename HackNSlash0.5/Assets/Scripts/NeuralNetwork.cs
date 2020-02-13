@@ -11,21 +11,27 @@ public class NeuralNetwork
         set {learningrate = value;}
     }
     int inputs;
-    int hiddens;
+    int[] hiddens;
     int outputs;
     public Matrix[] layers;
     Matrix[] biases;
-    public NeuralNetwork(int numI, int numH, int numO)
+    public NeuralNetwork(int numI, int[] numH, int numO)
     {
         inputs = numI;
         hiddens = numH;
         outputs = numO;
-        layers = new Matrix[2];
-        biases = new Matrix[2];
-        layers[0] = new Matrix(hiddens, inputs);
-        layers[1] = new Matrix(outputs, hiddens);
-        biases[0] = new Matrix(hiddens, 1);
-        biases[1] = new Matrix(outputs, 1);
+        layers = new Matrix[1+hiddens.Length];
+        biases = new Matrix[1 + hiddens.Length];
+        layers[0] = new Matrix(hiddens[0], inputs);
+        biases[0] = new Matrix(hiddens[0], 1);
+
+        for (int i = 1; i < hiddens.Length; i++)
+        {
+            layers[i] = new Matrix(hiddens[i], hiddens[i-1]);
+            biases[i] = new Matrix(hiddens[i], 1);
+        }
+        layers[layers.Length-1] = new Matrix(outputs, hiddens[hiddens.Length-1]);
+        biases[layers.Length-1] = new Matrix(outputs, 1);
         for (int l = 0; l < layers.Length; l++)
         {
             for (int i = 0; i < layers[l].Rows; i++)
@@ -125,16 +131,44 @@ public class NeuralNetwork
         {
             error[i, 0] = fCorrect[i] - rawOutputs[1].toArray()[i];
         }
-        Matrix deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[1]));
-        biases[1] += deltaB;
-        deltaB *= rawOutputs[0].Transpose();
-        layers[1] += deltaB;
+        Debug.Log(layers.Length);
+        for (int l = layers.Length-1; l >= 0; l--)
+        {
+            //error .print();
+            //Matrix deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[1]));
+            //biases[1] += deltaB;
+            //deltaB *= rawOutputs[0].Transpose();
+            //layers[1] += deltaB;
 
 
-        error = layers[1].Transpose() * error;
-        deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[0]));
-        biases[0] += deltaB;
-        deltaB *= new Matrix(fInput).Transpose();
-        layers[0] += deltaB;
+            //error = layers[1].Transpose() * error;
+            //deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[0]));
+            //biases[0] += deltaB;
+            //deltaB *= new Matrix(fInput).Transpose();
+            //layers[0] += deltaB;
+            //learningrate = Random.Range(0.1f, 1f);
+            //Random.InitState((int)System.DateTime.Now.Ticks);
+            Matrix deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[l]));
+            biases[l] += deltaB;
+            if (l > 0)
+            {
+                deltaB *= rawOutputs[l - 1].Transpose();
+            }
+            else
+            {
+                deltaB *= new Matrix(fInput).Transpose();
+            }
+            layers[l] += deltaB;
+
+            error = layers[l].Transpose() * error;
+            //deltaB = learningrate * error.eWiseMultiply(deltaSigmoid(rawOutputs[l - 1]));
+            //biases[l - 1] += deltaB;
+            //deltaB *= new Matrix(fInput).Transpose();
+            //layers[l - 1] += deltaB;
+        }
+        learningrate = Random.Range(0.001f, 10f);
+        Random.InitState((int)System.DateTime.Now.Ticks);
+
     }
+
 }

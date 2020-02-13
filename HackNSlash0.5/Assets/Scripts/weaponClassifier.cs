@@ -19,7 +19,8 @@ public class weaponClassifier : MonoBehaviour
     void Start()
     {
         //parseString();
-        nn = new NeuralNetwork(9, 9, 3);
+        int[] layers = { 18, 15, 9 };  
+        nn = new NeuralNetwork(9, layers, 3);
         nn.LearningRate = 1;
         buttons[0].onClick.AddListener(button0);
         buttons[1].onClick.AddListener(button1);

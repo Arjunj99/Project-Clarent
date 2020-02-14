@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class craftingScript : MonoBehaviour
 {
-
+    GameManager gm;
     enum mode { SELECT, CRAFT, SELECTED };
     mode playMode = mode.SELECT;
     //UI Elements
@@ -16,7 +16,7 @@ public class craftingScript : MonoBehaviour
 
     //Crafting REsources
     public int blocksUsed = 0;
-    public int blocksRemaining = 40;
+    public int blocksRemaining = 0;
     public GameObject temp;
     //Type of object currently crafting with
     public GameObject currentCraftingMat;
@@ -39,6 +39,8 @@ public class craftingScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        blocksRemaining = gm.blocks[0];
         sword = GameObject.Find("Sword");
         getBlock.onClick.AddListener(giveCraftingMat);
         //getJoint.onClick.AddListener(giveJointMat);
@@ -111,6 +113,7 @@ public class craftingScript : MonoBehaviour
                 {
                     blocksUsed++;
                     blocksRemaining--;
+                    gm.blocks[0]--;
                     DontDestroyOnLoad(activeObj);
                     if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("snapSpot"))
                     {
@@ -263,7 +266,8 @@ public class craftingScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Backspace) && activeObj.name != "baseBlade")
         {
             Destroy(activeObj.transform.parent.gameObject);
-            blocksRemaining += 100;
+            blocksRemaining += 1;
+            gm.blocks[0] += 1;
             interrupt(playMode);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))

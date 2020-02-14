@@ -10,7 +10,10 @@ public class EnemyController : MonoBehaviour
     public bool isAttacking = false;
     public bool invincible = false;
     public GameObject[] dismemberable;
+    public GameObject[] drops;
+    public int[] dropRates;
     private float iFrames = 1;
+    bool dead = false;
     int HP = 2;
     float strafeDir;
     GameObject player;
@@ -198,11 +201,12 @@ public class EnemyController : MonoBehaviour
         {
             StartCoroutine(wasHit());
             HP -= damage;
-            if (HP < 0)
+            if (HP <=0)
             {
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                //gameObject.GetComponent<Rigidbody>().useGravity = true;
-
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                StartCoroutine(Die());
+                dead = true;
                 //Destroy(gameObject.GetComponent<CharacterController>());
                 Destroy(gameObject.GetComponentInChildren<Animator>());
 
@@ -210,6 +214,7 @@ public class EnemyController : MonoBehaviour
                 {
                     if (hitPoint.Equals(g))
                     {
+                        hitPoint.AddComponent<DelayedDeath>();
                         hitPoint.transform.SetParent(null);
                         hitPoint.AddComponent<Rigidbody>();
                     }
@@ -217,12 +222,13 @@ public class EnemyController : MonoBehaviour
             }
             //Destroy(gameObject);
         }
-        else if (HP < 0)
+        else if (HP <= 0)
         {
             foreach (GameObject g in dismemberable)
             {
                 if (hitPoint.Equals(g))
                 {
+                    hitPoint.AddComponent<DelayedDeath>();
                     hitPoint.transform.SetParent(null);
                     hitPoint.AddComponent<Rigidbody>();
                 }
@@ -314,5 +320,34 @@ public class EnemyController : MonoBehaviour
         strafeB = true;
         yield return new WaitForSeconds(2);
         strafeB = false;
+    }
+
+    IEnumerator Die()
+    {
+        if (dead == false)
+        {
+            drop();
+            yield return new WaitForSeconds(2);
+            Destroy(gameObject);
+        }
+    }
+
+    void drop()
+    {
+        int roll = Random.Range(0, 100);
+        double lowerBound = 0;
+        double upperBound = 0;
+        print(roll);
+        for(int i = 0; i < dropRates.Length; i++)
+        {
+            lowerBound = upperBound;
+            upperBound += dropRates[i];
+            if(roll >= lowerBound && roll < upperBound)
+            {
+                GameObject localDrop = Instantiate(drops[i], transform.position, Quaternion.identity);
+                localDrop.AddComponent<Collectible>();
+                localDrop.GetComponentInChildren<Collider>().isTrigger = true;
+            }
+        }
     }
 }

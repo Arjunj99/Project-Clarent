@@ -338,6 +338,9 @@ MonoBehaviour:
   - {fileID: 7459571107768386482}
   - {fileID: 3296303493039444891}
   - {fileID: 7528835143840421222}
+  drops:
+  - {fileID: 2029450907050691961, guid: 6d55ac5bb7a0148f182fceb8b2f1f68c, type: 3}
+  dropRates: 64000000
 --- !u!54 &200654793
 Rigidbody:
   m_ObjectHideFlags: 0

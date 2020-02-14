@@ -594,7 +594,7 @@ MonoBehaviour:
     style: 1
     spawnpoints:
     - {fileID: 1823075106}
-    - {fileID: 0}
+    - {fileID: 2007361904}
     - {fileID: 37910293}
     - {fileID: 95703865}
     - {fileID: 984105613}
@@ -680,6 +680,7 @@ MonoBehaviour:
     type: 3}
   enemySword: {fileID: 5150301373522314833, guid: d115e7117d44146c49978f03d28d96d8,
     type: 3}
+  blocks: 00000000
 --- !u!4 &396605679
 Transform:
   m_ObjectHideFlags: 0

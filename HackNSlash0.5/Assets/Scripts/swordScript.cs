@@ -86,7 +86,7 @@ public class swordScript : MonoBehaviour
         {
             if (parent.GetComponent<ComboManager>().attacking == true)
             {
-                other.transform.root.GetComponent<EnemyController>().takeDamage(2, other.gameObject);
+                other.transform.root.GetComponent<EnemyController>().takeDamage(1, other.gameObject);
             }
         }
     }
